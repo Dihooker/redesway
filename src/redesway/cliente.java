@@ -4,8 +4,6 @@ package redesway;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 public class cliente extends javax.swing.JFrame {
@@ -19,10 +17,12 @@ public class cliente extends javax.swing.JFrame {
     
     public void ingresoCliente() throws SQLException{
         try{
+            //Verificacion campos de texto
             if(nombre.getText().isEmpty()||nit.getText().isEmpty()||direccion.getText().isEmpty()|correo.getText().isEmpty()||telefono.getText().isEmpty()||contacto.getText().isEmpty()){
                 JOptionPane.showMessageDialog(null, "Los campos no pueden estar vacios");
             }
             else{
+                //Creacio de clientes
                 ps= con.getconexion().prepareStatement("INSERT INTO cliente(nombre, nit,direccion, email,telefono, contacto) VALUES(?,?,?,?,?,?)");
                 ps.setString(1, nombre.getText());
                 ps.setString(2, nit.getText());
@@ -34,7 +34,7 @@ public class cliente extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Guardado");
         }}
         catch(Exception e){
-          
+            //Registro de errores a la base de datos
             JOptionPane.showMessageDialog(null,"Error al ingresar a la base de datos");
             System.out.println(e);
             ps= con.getconexion().prepareStatement("INSERT INTO error(tipo) VALUES(?)");
@@ -79,13 +79,13 @@ public class cliente extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JSeparator();
         correo = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
-        jButton4 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -208,11 +208,46 @@ public class cliente extends javax.swing.JFrame {
         jPanel2.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 210, 30));
 
         correo.setBorder(null);
-        jPanel2.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 90, 215, 20));
+        jPanel2.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(365, 90, 210, 20));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Correo");
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, 60, -1));
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 50, 40));
+
+        jButton6.setBackground(new java.awt.Color(255, 255, 204));
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 40));
+
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 50, 40));
+
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 50, 40));
+
+        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, 130, 130));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -230,42 +265,7 @@ public class cliente extends javax.swing.JFrame {
         jTable1.setSelectionForeground(new java.awt.Color(153, 204, 255));
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 210, 440, 150));
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 50, 40));
-
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 50, 40));
-
-        jButton6.setBackground(new java.awt.Color(255, 255, 204));
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 40));
-
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 50, 40));
-
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 130, 130));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 210, 440, 150));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 620, 390));
 
