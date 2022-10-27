@@ -10,7 +10,7 @@ public class conexion {
     public Connection getconexion(){
         try{
             con=(Connection)DriverManager.getConnection("jdbc:mysql://localhost/redesway","root","");
-            System.out.println("Conexion establecida de forma satisfactoria");
+           
             return con;
         } catch (SQLException e) {
             System.out.println(e);
