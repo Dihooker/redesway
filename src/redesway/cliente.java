@@ -62,12 +62,12 @@ public class cliente extends javax.swing.JFrame {
     public void buscarCliente(){
         String  whereLike="WHERE nit LIKE '%"+nit.getText()+"%'";
         try{
-            DefaultTableModel modelo = new DefaultTableModel();
-            tabla.setModel(modelo);
             //busqueda en la base de datos
             ps= con.getconexion().prepareStatement("SELECT nombre,nit,direccion FROM cliente "+whereLike);
             rs=ps.executeQuery();
             ResultSetMetaData rsMd =rs.getMetaData();
+            DefaultTableModel modelo = new DefaultTableModel();
+            tabla.setModel(modelo);
             int cantidadColumnas= rsMd.getColumnCount();
             //Asignacion de columnas
             modelo.addColumn("Nombre");
