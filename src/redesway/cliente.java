@@ -1,12 +1,13 @@
-
 package redesway;
 
+import java.awt.Color;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 public class cliente extends javax.swing.JFrame {
     //Atributos y objetos
@@ -14,7 +15,6 @@ public class cliente extends javax.swing.JFrame {
     PreparedStatement ps;
     ResultSet rs;
     clienteDAO client= new clienteDAO();
-    
     //Setters de la clase clienteDAO
     public void ClienteDao(){
         client.setNombre(nombre.getText());
@@ -63,15 +63,16 @@ public class cliente extends javax.swing.JFrame {
         String  whereLike="WHERE nit LIKE '%"+nit.getText()+"%'";
         try{
             //busqueda en la base de datos
-            ps= con.getconexion().prepareStatement("SELECT nombre,nit,direccion FROM cliente "+whereLike);
+            ps= con.getconexion().prepareStatement("SELECT nit,nombre,direccion FROM cliente "+whereLike);
             rs=ps.executeQuery();
             ResultSetMetaData rsMd =rs.getMetaData();
+            //Configuracion de  la tabla
             DefaultTableModel modelo = new DefaultTableModel();
             tabla.setModel(modelo);
             int cantidadColumnas= rsMd.getColumnCount();
             //Asignacion de columnas
-            modelo.addColumn("Nombre");
             modelo.addColumn("Nit");
+            modelo.addColumn("Nombre");
             modelo.addColumn("Direccion");
             int [] anchos ={5,5,5};
             //Asignacion de tamaño de celdas
@@ -108,24 +109,21 @@ public class cliente extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jSeparator1 = new javax.swing.JSeparator();
         contacto = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         nit = new javax.swing.JTextField();
         jSeparator3 = new javax.swing.JSeparator();
         direccion = new javax.swing.JTextField();
+        correo = new javax.swing.JTextField();
+        telefono = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jSeparator4 = new javax.swing.JSeparator();
         nombre = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
-        telefono = new javax.swing.JTextField();
         jSeparator7 = new javax.swing.JSeparator();
-        correo = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jButton5 = new javax.swing.JButton();
@@ -134,6 +132,7 @@ public class cliente extends javax.swing.JFrame {
         jButton7 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -185,15 +184,7 @@ public class cliente extends javax.swing.JFrame {
 
         contacto.setBorder(null);
         jPanel2.add(contacto, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 140, 200, 20));
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Nombre");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 41, 57, 23));
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setText("Nombre");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 41, 57, 23));
-        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 160, 210, 30));
+        jPanel2.add(jSeparator2, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 160, 200, 30));
 
         nit.setBorder(null);
         nit.addActionListener(new java.awt.event.ActionListener() {
@@ -209,7 +200,7 @@ public class cliente extends javax.swing.JFrame {
                 nitKeyTyped(evt);
             }
         });
-        jPanel2.add(nit, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 40, 215, 20));
+        jPanel2.add(nit, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 180, 20));
         jPanel2.add(jSeparator3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 110, 190, -1));
 
         direccion.setBorder(null);
@@ -218,12 +209,21 @@ public class cliente extends javax.swing.JFrame {
         direccion.setSelectionColor(new java.awt.Color(255, 204, 51));
         jPanel2.add(direccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, 190, 20));
 
+        correo.setBorder(null);
+        jPanel2.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(375, 90, 200, 20));
+
+        telefono.setBorder(null);
+        telefono.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        telefono.setFocusCycleRoot(true);
+        telefono.setSelectionColor(new java.awt.Color(255, 204, 51));
+        jPanel2.add(telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 190, 20));
+
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Telefono");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 70, 23));
 
         jSeparator4.setFocusable(true);
-        jPanel2.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(87, 60, 190, -1));
+        jPanel2.add(jSeparator4, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 60, 210, -1));
 
         nombre.setBorder(null);
         nombre.addActionListener(new java.awt.event.ActionListener() {
@@ -236,35 +236,22 @@ public class cliente extends javax.swing.JFrame {
                 nombreKeyTyped(evt);
             }
         });
-        jPanel2.add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 40, 190, 20));
-
-        jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel7.setText("Nombre");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(12, 41, 57, 23));
+        jPanel2.add(nombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 40, 210, 20));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Contacto");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 70, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setText("NIT");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 30, -1));
-        jPanel2.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(365, 60, 210, 10));
+        jLabel9.setText("Nit");
+        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 60, -1));
+        jPanel2.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 190, 10));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Direccion");
         jPanel2.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 70, 23));
         jPanel2.add(jSeparator6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 160, 190, -1));
-
-        telefono.setBorder(null);
-        telefono.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        telefono.setFocusCycleRoot(true);
-        telefono.setSelectionColor(new java.awt.Color(255, 204, 51));
-        jPanel2.add(telefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 190, 20));
-        jPanel2.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 110, 210, 30));
-
-        correo.setBorder(null);
-        jPanel2.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(365, 90, 210, 20));
+        jPanel2.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 110, 200, 30));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Correo");
@@ -305,25 +292,15 @@ public class cliente extends javax.swing.JFrame {
 
         jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, 130, 130));
 
-        tabla.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        tabla.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
+        tabla.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tabla.setGridColor(new java.awt.Color(255, 255, 255));
         jScrollPane2.setViewportView(tabla);
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 440, 190));
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel12.setText("Nombre");
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 60, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 620, 390));
 
@@ -336,46 +313,46 @@ public class cliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1FocusGained
 
-    private void nitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nitActionPerformed
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_nitActionPerformed
-
-    private void nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nombreActionPerformed
-
-    private void nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nombreKeyTyped
+    }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-   buscarCliente();
+        buscarCliente();
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        try {
+            ingresoCliente();
+        } catch (Exception e) {
+
+        }
+
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton5ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-         try {
-            ingresoCliente();
-        } catch (Exception e) {
-            
-        }
-       
-    }//GEN-LAST:event_jButton6ActionPerformed
-
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_nombreKeyTyped
 
-    private void nitKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyReleased
-       buscarCliente();
-    }//GEN-LAST:event_nitKeyReleased
+    private void nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombreActionPerformed
 
     private void nitKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyTyped
-     buscarCliente();
+        buscarCliente();
     }//GEN-LAST:event_nitKeyTyped
+
+    private void nitKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyReleased
+        buscarCliente();
+    }//GEN-LAST:event_nitKeyReleased
+
+    private void nitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nitActionPerformed
 
     /**
      * @param args the command line arguments
@@ -427,12 +404,10 @@ public class cliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
