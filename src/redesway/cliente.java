@@ -269,6 +269,7 @@ public class cliente extends javax.swing.JFrame {
         jPanel3.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 50, 40));
 
         jButton6.setBackground(new java.awt.Color(255, 255, 204));
+        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icons8-save-as-16.png"))); // NOI18N
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
