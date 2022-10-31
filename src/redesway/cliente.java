@@ -1,13 +1,15 @@
 package redesway;
 
-import java.awt.Color;
+
+import java.awt.Font;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
+
 
 public class cliente extends javax.swing.JFrame {
     //Atributos y objetos
@@ -24,9 +26,19 @@ public class cliente extends javax.swing.JFrame {
         client.setCorreo(correo.getText());
         client.setContacto(contacto.getText()); 
     }
+    public void borrar(){
+        nombre.setText(" ");
+        nit.setText(" ");
+        direccion.setText(" ");
+        telefono.setText("");
+        correo.setText("");
+        contacto.setText("");
+    }
     public cliente() {
         initComponents();
         buscarCliente();
+                        
+
     }
     //Ingreso de clientes
     public void ingresoCliente() throws SQLException{
@@ -47,6 +59,8 @@ public class cliente extends javax.swing.JFrame {
                 ps.setString(6, client.getContacto());
                 ps.executeUpdate();
                 JOptionPane.showMessageDialog(null, "Guardado");
+                borrar();
+               
             }}
         catch(Exception e){
             //Registro de errores a la base de datos
@@ -63,7 +77,7 @@ public class cliente extends javax.swing.JFrame {
         String  whereLike="WHERE nit LIKE '%"+nit.getText()+"%'";
         try{
             //busqueda en la base de datos
-            ps= con.getconexion().prepareStatement("SELECT nit,nombre,direccion FROM cliente "+whereLike);
+            ps= con.getconexion().prepareStatement("SELECT nit,nombre,direccion,telefono, email FROM cliente "+whereLike);
             rs=ps.executeQuery();
             ResultSetMetaData rsMd =rs.getMetaData();
             //Configuracion de  la tabla
@@ -74,7 +88,10 @@ public class cliente extends javax.swing.JFrame {
             modelo.addColumn("Nit");
             modelo.addColumn("Nombre");
             modelo.addColumn("Direccion");
-            int [] anchos ={5,5,5};
+            modelo.addColumn("Telefono");
+            modelo.addColumn("Correo");
+            
+            int [] anchos ={100,100,100,100,100};
             //Asignacion de tamaño de celdas
             for(int x=0;x<cantidadColumnas;x++){
                 tabla.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
@@ -95,10 +112,11 @@ public class cliente extends javax.swing.JFrame {
    }
     
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
         jButton10 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -119,38 +137,41 @@ public class cliente extends javax.swing.JFrame {
         jSeparator4 = new javax.swing.JSeparator();
         nombre = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         jSeparator5 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
         jSeparator6 = new javax.swing.JSeparator();
         jSeparator7 = new javax.swing.JSeparator();
         jLabel11 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jLabel12 = new javax.swing.JLabel();
+        jButton6 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setSize(new java.awt.Dimension(0, 500));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/profile.png"))); // NOI18N
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, 90, -1));
+
+        jButton10.setBackground(new java.awt.Color(0, 0, 102));
         jButton10.setForeground(new java.awt.Color(255, 255, 255));
         jButton10.setText("jButton10");
-        jPanel1.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 333, 140, 40));
+        jPanel1.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 410, 150, 40));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("INGRESO DE CLIENTES");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 30, 230, 40));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 50, 230, 40));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IMAGEN.jpg"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 0, 640, 100));
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/402864.jpg"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 20, 640, 110));
 
         jButton1.setBackground(new java.awt.Color(0, 0, 102));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
@@ -161,20 +182,20 @@ public class cliente extends javax.swing.JFrame {
                 jButton1FocusGained(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 150, 40));
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 150, 40));
 
         jButton2.setBackground(new java.awt.Color(0, 0, 102));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("jButton1");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 150, 40));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 150, 40));
 
         jButton3.setBackground(new java.awt.Color(0, 0, 102));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
         jButton3.setText("jButton1");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 150, 40));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 150, 40));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IMAGEN3.jpg"))); // NOI18N
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 500));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IMAGEN3_1.jpg"))); // NOI18N
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 600));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -241,10 +262,6 @@ public class cliente extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Contacto");
         jPanel2.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 70, -1));
-
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setText("Nit");
-        jPanel2.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 60, -1));
         jPanel2.add(jSeparator5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 190, 10));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -257,108 +274,112 @@ public class cliente extends javax.swing.JFrame {
         jLabel11.setText("Correo");
         jPanel2.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 90, 60, -1));
 
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel3.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        tabla.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        tabla.setGridColor(new java.awt.Color(255, 255, 255));
+        tabla.setMinimumSize(new java.awt.Dimension(100, 112));
+        jScrollPane2.setViewportView(tabla);
 
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 50, 40));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 510, 160));
 
-        jButton6.setBackground(new java.awt.Color(255, 255, 204));
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel12.setText("Nit");
+        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 70, -1));
+
+        jButton6.setBackground(new java.awt.Color(0, 0, 153));
+        jButton6.setForeground(new java.awt.Color(255, 255, 255));
         jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icons8-save-as-16.png"))); // NOI18N
+        jButton6.setText("Guardar");
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 50, 40));
+        jPanel2.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 370, 120, 40));
 
+        jButton4.setBackground(new java.awt.Color(0, 0, 153));
+        jButton4.setForeground(new java.awt.Color(255, 255, 255));
+        jButton4.setText("Cancelar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 50, 40));
+        jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 370, 110, 40));
 
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        jButton5.setBackground(new java.awt.Color(0, 0, 153));
+        jButton5.setForeground(new java.awt.Color(255, 255, 255));
+        jButton5.setText("Buscar");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                jButton5ActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 50, 40));
+        jPanel2.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 370, 100, 40));
 
-        jPanel2.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, 130, 130));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel13.setText("Nombre");
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 60, -1));
 
-        tabla.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        tabla.setGridColor(new java.awt.Color(255, 255, 255));
-        jScrollPane2.setViewportView(tabla);
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 140, 620, 440));
 
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 440, 190));
-
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel12.setText("Nombre");
-        jPanel2.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 60, -1));
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 620, 390));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(-10, 20, 790, 520));
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }// </editor-fold>                        
 
-    private void jButton1FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jButton1FocusGained
+    private void jButton1FocusGained(java.awt.event.FocusEvent evt) {                                     
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1FocusGained
+    }                                    
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         buscarCliente();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }                                        
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         try {
             ingresoCliente();
         } catch (Exception e) {
 
         }
 
-    }//GEN-LAST:event_jButton6ActionPerformed
+    }                                        
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {                                         
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }                                        
 
-    private void nombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreKeyTyped
+    private void nombreKeyTyped(java.awt.event.KeyEvent evt) {                                
         // TODO add your handling code here:
-    }//GEN-LAST:event_nombreKeyTyped
+    }                               
 
-    private void nombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreActionPerformed
+    private void nombreActionPerformed(java.awt.event.ActionEvent evt) {                                       
         // TODO add your handling code here:
-    }//GEN-LAST:event_nombreActionPerformed
+    }                                      
 
-    private void nitKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyTyped
+    private void nitKeyTyped(java.awt.event.KeyEvent evt) {                             
         buscarCliente();
-    }//GEN-LAST:event_nitKeyTyped
+    }                            
 
-    private void nitKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyReleased
+    private void nitKeyReleased(java.awt.event.KeyEvent evt) {                                
         buscarCliente();
-    }//GEN-LAST:event_nitKeyReleased
+    }                               
 
-    private void nitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nitActionPerformed
+    private void nitActionPerformed(java.awt.event.ActionEvent evt) {                                    
         // TODO add your handling code here:
-    }//GEN-LAST:event_nitActionPerformed
+    }                                   
 
     /**
      * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+     */public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -372,25 +393,25 @@ public class cliente extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(PaginaPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new cliente().setVisible(true);
+                new PaginaPrincipal().setVisible(true);
             }
         });
-    }
+     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // Variables declaration - do not modify                     
     private javax.swing.JTextField contacto;
     private javax.swing.JTextField correo;
     private javax.swing.JTextField direccion;
@@ -401,11 +422,11 @@ public class cliente extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel6;
@@ -413,7 +434,6 @@ public class cliente extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -426,5 +446,5 @@ public class cliente extends javax.swing.JFrame {
     private javax.swing.JTextField nombre;
     private javax.swing.JTable tabla;
     private javax.swing.JTextField telefono;
-    // End of variables declaration//GEN-END:variables
+    // End of variables declaration                   
 }

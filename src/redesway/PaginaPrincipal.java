@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package redesway;
-
 import java.awt.Font;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 
@@ -19,6 +14,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     public PaginaPrincipal() {
         initComponents();
         cambioTitulo();
+        //setIconImage(new ImageIcon(getClass().getResource("../imagenes/Logo2.jpeg")).getImage());
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -54,6 +51,11 @@ public class PaginaPrincipal extends javax.swing.JFrame {
 
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/contact.png"))); // NOI18N
         jButton8.setText("Ingresar cliente");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -102,8 +104,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         jPanel1.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 270, 200, 50));
 
         logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/profile.png"))); // NOI18N
-        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 110, 80));
+        logo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/WhatsApp Image 2022-10-30 at 11.42.36 AM-modified-modified (1).png"))); // NOI18N
+        jPanel1.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 110, 80));
 
         jPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 250, 470));
 
@@ -137,6 +139,11 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         jButton4.setForeground(new java.awt.Color(255, 255, 255));
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/service.png"))); // NOI18N
         jButton4.setText("Crear Servicio");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 40, 160, 80));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 800, 470));
@@ -145,10 +152,22 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        cliente Cliente = new cliente();
-        Cliente.setVisible(true);
+        facturacion Fact = new facturacion();
+        Fact.setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+     cliente Cliente = new cliente();
+     Cliente.setVisible(true);
+     setVisible(false);
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+      servicio Servicio = new servicio();
+        Servicio.setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     public void cambioTitulo(){
         try{
