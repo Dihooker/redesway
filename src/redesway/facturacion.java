@@ -1,6 +1,8 @@
 
 package redesway;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.sql.ResultSetMetaData;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
@@ -12,40 +14,46 @@ public class facturacion extends javax.swing.JFrame {
     PreparedStatement ps;  
     ResultSet rs;
     conexion con = new conexion();
+    
     public facturacion() {
         initComponents();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+       // nit.setFont(new Font("Tahoma", Font.BOLD, 20));
+        nit.setForeground(Color.blue);
         nit.setText("001");
-        correo.setText("Generico");     
-        search();
+        correo.setText("Generico");
+        
+        
           
     }
 public void search(){
-     
-        String  whereLike="WHERE nit LIKE '%"+nit.getText()+"%'";
-        try{
-            //busqueda en la base de datos
-            ps= con.getconexion().prepareStatement("SELECT nit,nombre,direccion,telefono, email FROM cliente "+whereLike);
-            rs=ps.executeQuery();
-            ResultSetMetaData rsMd =rs.getMetaData();
-            //Configuracion de  la tabla
-            DefaultTableModel modelo = new DefaultTableModel();
-            tabla.setModel(modelo);
-            int cantidadColumnas= rsMd.getColumnCount();
+          DefaultTableModel modelo = new DefaultTableModel();
+          tablaNombre.setModel(modelo);
             //Asignacion de columnas
             modelo.addColumn("Nit");
             modelo.addColumn("Nombre");
-            modelo.addColumn("Direccion");
-            modelo.addColumn("Telefono");
-            modelo.addColumn("Correo");
-            
-            int [] anchos ={100,100,100,100,100};
+           
+            if(busqueda.isSelected()){
+                
+                 String combobox= combo.getSelectedItem().toString();
+            if(combobox.equals("Nombre")){
+         String  whereLike="WHERE nombre LIKE '%"+correo.getText()+"%'";
+        try{
+            //busqueda en la base de datos
+            ps= con.getconexion().prepareStatement("SELECT nit,nombre FROM cliente "+whereLike);
+            rs=ps.executeQuery();
+            ResultSetMetaData rsMd =rs.getMetaData();
+            //Configuracion de  la tabla
+            int cantidadColumnas= rsMd.getColumnCount();
+            int [] anchos ={100,100};
             //Asignacion de tamaño de celdas
             for(int x=0;x<cantidadColumnas;x++){
-                tabla.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
+                tablaNombre.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
             }
             while(rs.next()){
-                String a=rs.getString("nombre");
-               correo.setText(a);
+                //String a=rs.getString("nombre");
+               //correo.setText(a);
                 //System.out.println(a);
                 Object[] filas = new Object[cantidadColumnas];
                 for(int i=0; i<cantidadColumnas; i++){
@@ -57,6 +65,36 @@ public void search(){
           catch(Exception e){
               System.out.println(e);       
           }
+        }else {
+     
+        String  whereLike="WHERE nit LIKE '%"+nit.getText()+"%'";
+        try{
+            //busqueda en la base de datos
+            ps= con.getconexion().prepareStatement("SELECT nit,nombre FROM cliente "+whereLike);
+            rs=ps.executeQuery();
+            ResultSetMetaData rsMd =rs.getMetaData();
+            //Configuracion de  la tabla
+            int cantidadColumnas= rsMd.getColumnCount();
+            int [] anchos ={100,100};
+            //Asignacion de tamaño de celdas
+            for(int x=0;x<cantidadColumnas;x++){
+                tablaNombre.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
+            }
+            while(rs.next()){
+                //String a=rs.getString("nombre");
+               //correo.setText(a);
+                //System.out.println(a);
+                Object[] filas = new Object[cantidadColumnas];
+                for(int i=0; i<cantidadColumnas; i++){
+                    filas[i]= rs.getObject(i+1); 
+                }
+                modelo.addRow(filas);
+            }
+          }
+          catch(Exception e){
+              System.out.println(e);       
+          }}}
+            
 }
    
     @SuppressWarnings("unchecked")
@@ -67,9 +105,6 @@ public void search(){
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        jButton4 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -85,7 +120,8 @@ public void search(){
         jSeparator12 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jSeparator8 = new javax.swing.JSeparator();
         correo = new javax.swing.JTextField();
@@ -94,9 +130,13 @@ public void search(){
         nit = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tablaNombre = new javax.swing.JTable();
+        jButton1 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        combo = new javax.swing.JComboBox();
+        busqueda = new javax.swing.JRadioButton();
+        jSeparator1 = new javax.swing.JSeparator();
         jPanel4 = new javax.swing.JPanel();
-        jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -111,6 +151,7 @@ public void search(){
         jButton8 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jRadioButton1 = new javax.swing.JRadioButton();
 
         jButton6.setText("jButton5");
 
@@ -126,37 +167,17 @@ public void search(){
         jTextField1.setEditable(false);
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 30, 110, 30));
 
-        jButton4.setBackground(new java.awt.Color(153, 0, 0));
-        jButton4.setForeground(new java.awt.Color(255, 195, 1));
-        jButton4.setText("Pagina Principal");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 120, 40));
-
-        jButton3.setBackground(new java.awt.Color(153, 0, 0));
-        jButton3.setForeground(new java.awt.Color(255, 195, 1));
-        jButton3.setText("Crear Servicio");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 120, 40));
-
-        jButton2.setBackground(new java.awt.Color(153, 0, 0));
-        jButton2.setForeground(new java.awt.Color(255, 195, 1));
-        jButton2.setText("Crear Servicio");
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 120, 40));
-
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setForeground(new java.awt.Color(51, 51, 51));
         jLabel2.setText("Facturacion");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 20, 150, 50));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/WallpaperDog-10724738_1.jpg"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/1156778_2.jpg"))); // NOI18N
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 0, 880, 100));
 
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/Fondo-rojo.jpg"))); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/1156778(1)_2.jpg"))); // NOI18N
         jLabel3.setText("jLabel3");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 120, 620));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 120, 680));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("servicio"));
@@ -184,11 +205,11 @@ public void search(){
         ));
         jScrollPane2.setViewportView(jTable2);
 
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 380, 60));
+        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 380, 60));
 
         servicio.setBorder(null);
-        jPanel2.add(servicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 300, 20));
-        jPanel2.add(jSeparator12, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 300, 30));
+        jPanel2.add(servicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 300, 20));
+        jPanel2.add(jSeparator12, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 300, 10));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel10.setText("Cantidad");
@@ -196,19 +217,27 @@ public void search(){
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel14.setText("Servicio");
-        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 60, 20));
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 60, 20));
 
-        jButton1.setText("Agregar");
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 170, -1, -1));
+        jButton7.setText("Borrar");
+        jPanel2.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 200, -1, -1));
 
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, 410, 210));
+        jButton10.setText("Agregar");
+        jPanel2.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
+
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, 410, 240));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Cliente"));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel3.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 160, 30));
+        jPanel3.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 150, 10));
 
         correo.setBorder(null);
+        correo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                correoActionPerformed(evt);
+            }
+        });
         correo.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 correoKeyPressed(evt);
@@ -217,12 +246,12 @@ public void search(){
                 correoKeyTyped(evt);
             }
         });
-        jPanel3.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, 160, 20));
+        jPanel3.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 150, 20));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Nombre");
-        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 40, 60, -1));
-        jPanel3.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 120, 30));
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 100, 60, -1));
+        jPanel3.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 120, 10));
 
         nit.setBorder(null);
         nit.addActionListener(new java.awt.event.ActionListener() {
@@ -238,38 +267,60 @@ public void search(){
                 nitKeyTyped(evt);
             }
         });
-        jPanel3.add(nit, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 120, 20));
+        jPanel3.add(nit, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, 120, 20));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Nit");
-        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 51, -1));
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 51, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tablaNombre.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        tablaNombre.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null}
+                {null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Nit", "Nombre"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tablaNombre.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaNombreMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tablaNombre);
 
-        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 410, 60));
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 410, 60));
 
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 450, 210));
+        jButton1.setText("Borrar");
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, -1, -1));
+
+        jButton11.setText("Agregar");
+        jPanel3.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, -1, -1));
+
+        combo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nit", "Nombre" }));
+        jPanel3.add(combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, -1, 30));
+
+        busqueda.setText("Buscar Cliente");
+        jPanel3.add(busqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, -1, 30));
+        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 410, -1));
+
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 450, 240));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Factura"));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel12.setText("Descuento");
-        jPanel4.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 320, -1, -1));
 
         jLabel13.setText("Total");
         jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 350, 30, -1));
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
                 {null, null, null, null},
@@ -281,22 +332,22 @@ public void search(){
         ));
         jScrollPane4.setViewportView(tabla);
 
-        jPanel4.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, 580, 180));
-        jPanel4.add(total, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 130, -1));
-        jPanel4.add(Neto, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 210, 130, -1));
-        jPanel4.add(desc, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 230, 130, -1));
+        jPanel4.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 580, 180));
+        jPanel4.add(total, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 280, 130, 30));
+        jPanel4.add(Neto, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, 130, 30));
+        jPanel4.add(desc, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 130, 30));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Valor Total");
-        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 250, -1, -1));
+        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 280, -1, 20));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setText("Valor Neto");
-        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 210, -1, -1));
+        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 220, -1, 20));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Descuento");
-        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 230, -1, -1));
+        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 250, -1, 20));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -314,63 +365,25 @@ public void search(){
         jButton9.setText("Buscar");
         jPanel5.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 90, 50));
 
-        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 30, 230, 230));
+        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 50, 230, 210));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 320, 860, 300));
+        jRadioButton1.setText("Ret.Fuente");
+        jPanel4.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 630));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, 860, 320));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 990, 680));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-     PaginaPrincipal pagPrincipal = new PaginaPrincipal();
-     pagPrincipal.setVisible(true);
-     setVisible(false);
-    }//GEN-LAST:event_jButton4ActionPerformed
-
     private void nitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyPressed
-        
+         search();
        
     }//GEN-LAST:event_nitKeyPressed
 
     private void correoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_correoKeyPressed
-           String  whereLike="WHERE nombre LIKE '%"+correo.getText()+"%'";
-        try{
-            //busqueda en la base de datos
-            ps= con.getconexion().prepareStatement("SELECT nit,nombre,direccion,telefono, email FROM cliente "+whereLike);
-            rs=ps.executeQuery();
-            ResultSetMetaData rsMd =rs.getMetaData();
-            //Configuracion de  la tabla
-            DefaultTableModel modelo = new DefaultTableModel();
-            tabla.setModel(modelo);
-            int cantidadColumnas= rsMd.getColumnCount();
-            //Asignacion de columnas
-            modelo.addColumn("Nit");
-            modelo.addColumn("Nombre");
-            modelo.addColumn("Direccion");
-            modelo.addColumn("Telefono");
-            modelo.addColumn("Correo");
-            
-            int [] anchos ={100,100,100,100,100};
-            //Asignacion de tamaño de celdas
-            for(int x=0;x<cantidadColumnas;x++){
-                tabla.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
-            }
-            while(rs.next()){
-                String a=rs.getString("nit");
-               nit.setText(a);
-                //System.out.println(a);
-                Object[] filas = new Object[cantidadColumnas];
-                for(int i=0; i<cantidadColumnas; i++){
-                    filas[i]= rs.getObject(i+1); 
-                }
-                modelo.addRow(filas);
-            }
-          }
-          catch(Exception e){
-              System.out.println(e);       
-          }
+          search();
     }//GEN-LAST:event_correoKeyPressed
 
     private void nitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nitActionPerformed
@@ -412,12 +425,20 @@ public void search(){
     }//GEN-LAST:event_nitActionPerformed
 
     private void nitKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyTyped
-       search();
+     
     }//GEN-LAST:event_nitKeyTyped
 
     private void correoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_correoKeyTyped
-        // TODO add your handling code here:
+       search();
     }//GEN-LAST:event_correoKeyTyped
+
+    private void tablaNombreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaNombreMouseClicked
+        
+    }//GEN-LAST:event_tablaNombreMouseClicked
+
+    private void correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_correoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -460,22 +481,23 @@ public void search(){
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Neto;
     private javax.swing.JButton buscar;
+    private javax.swing.JRadioButton busqueda;
     private javax.swing.JTextField cantidad;
     private javax.swing.JTextField codigo;
+    private javax.swing.JComboBox combo;
     private javax.swing.JTextField correo;
     private javax.swing.JTextField desc;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
@@ -491,20 +513,22 @@ public void search(){
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField nit;
     private javax.swing.JTextField servicio;
     private javax.swing.JTable tabla;
+    private javax.swing.JTable tablaNombre;
     private javax.swing.JTextField total;
     // End of variables declaration//GEN-END:variables
 }
