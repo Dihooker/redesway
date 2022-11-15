@@ -3,19 +3,32 @@ package redesway;
 
 
 public class servicioDAO {
-    private int  codigo;
+    private String  codigo;
     private String nomServicio;
     private int cantidad;
-    private int total;
-    
-   public  servicioDAO(int codigo, String nomServicio,int cantidad, int total){
-        this.cantidad=cantidad;
-        this.codigo=codigo;
-        this.nomServicio=nomServicio;
-        this.total=total;
+    private int precio;
+
+    public void setCodigo(String codigo) {
+        this.codigo = codigo;
     }
 
-    public int getCodigo() {
+    public void setNomServicio(String nomServicio) {
+        this.nomServicio = nomServicio;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+
+    public void setPrecio(int total) {
+        this.precio = total;
+    }
+    
+ 
+
+    
+
+    public String getCodigo() {
         return codigo;
     }
 
@@ -26,8 +39,8 @@ public class servicioDAO {
     public int getCantidad() {
         return cantidad;
     }
-    public int getTotal(){
-        return total;
+    public int getPrecio(){
+        return precio;
     }
     
 }

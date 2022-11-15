@@ -7,95 +7,141 @@ import java.sql.ResultSetMetaData;
 import javax.swing.table.DefaultTableModel;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
+import javax.swing.table.JTableHeader;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 public class facturacion extends javax.swing.JFrame {
     private int descuento;
     private int retefuente;
     PreparedStatement ps;  
     ResultSet rs;
     conexion con = new conexion();
+    PaginaPrincipal principal = new PaginaPrincipal();
+    servicioDAO Servicio = new servicioDAO();
+     DefaultTableModel modelo = new DefaultTableModel();
+      
+    
     
     public facturacion() {
         initComponents();
         this.setResizable(false);
         this.setLocationRelativeTo(null);
+        fecha.setVisible(false);
        // nit.setFont(new Font("Tahoma", Font.BOLD, 20));
+        
         nit.setForeground(Color.blue);
         nit.setText("001");
-        correo.setText("Generico");
+        correo.setText("Cliente Ocasional");   
+        codigo.setText("001");
+        servicio.setText("Generico");
+        cantidad.setText("1");
+        //Configuracion header por defecto tabla principal
+        JTableHeader headerPrincipal = tabla.getTableHeader();
+        ((DefaultTableCellRenderer)headerPrincipal.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        //Configuracion  header por defecto tabla servicio
+        JTableHeader headerServicio = tablaservicio.getTableHeader();
+        ((DefaultTableCellRenderer)headerServicio.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        //configuracion header por defecto tabla nombre
+        JTableHeader headerNombre = tablaNombre.getTableHeader();
+        ((DefaultTableCellRenderer)headerNombre.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        //Configuracion tabla principal
+        DefaultTableModel modeloPrincipal = new DefaultTableModel();
+        modeloPrincipal.addColumn("Codigo");
+        modeloPrincipal.addColumn("Servicio");
+        modeloPrincipal.addColumn("Cantidad");
+        modeloPrincipal.addColumn("Precio");
+        tabla.setModel(modeloPrincipal);
+        //configuracion tabla servicio
+        DefaultTableModel modeloServicio = new DefaultTableModel();
+        modeloServicio.addColumn("Codigo");
+        modeloServicio.addColumn("Servicio");
+        modeloServicio.addColumn("Cantidad");
+        modeloServicio.addColumn("precio");
+        DefaultTableCellRenderer render = new  DefaultTableCellRenderer();
+        DefaultTableCellRenderer renderRight = new  DefaultTableCellRenderer();
+        tablaservicio.setModel(modeloServicio);
+        tabla.setModel(modelo);
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Servicio");
+        modelo.addColumn("cantidad");
+        tabla.getColumnModel().getColumn(0).setPreferredWidth(1);
+        tabla.getColumnModel().getColumn(2).setPreferredWidth(1);
+        render.setHorizontalAlignment(JLabel.CENTER);
+        renderRight.setHorizontalAlignment(JLabel.RIGHT);
+        tabla.getColumnModel().getColumn(0).setCellRenderer(render);
+        tabla.getColumnModel().getColumn(1).setCellRenderer(render);
+        tabla.getColumnModel().getColumn(2).setCellRenderer(renderRight);
         
         
-          
+       
+        
     }
-public void search(){
-          DefaultTableModel modelo = new DefaultTableModel();
-          tablaNombre.setModel(modelo);
-            //Asignacion de columnas
-            modelo.addColumn("Nit");
-            modelo.addColumn("Nombre");
+    public void search(){
+         //Parametros de la tabla
+        DefaultTableModel modelo = new DefaultTableModel();
+        tablaNombre.setModel(modelo);
+        modelo.addColumn("Nit");
+        modelo.addColumn("Nombre");
            
-            if(busqueda.isSelected()){
-                
-                 String combobox= combo.getSelectedItem().toString();
+        if(busqueda.isSelected()){
+            String combobox= combo.getSelectedItem().toString();
             if(combobox.equals("Nombre")){
-         String  whereLike="WHERE nombre LIKE '%"+correo.getText()+"%'";
-        try{
-            //busqueda en la base de datos
-            ps= con.getconexion().prepareStatement("SELECT nit,nombre FROM cliente "+whereLike);
-            rs=ps.executeQuery();
-            ResultSetMetaData rsMd =rs.getMetaData();
-            //Configuracion de  la tabla
-            int cantidadColumnas= rsMd.getColumnCount();
-            int [] anchos ={100,100};
-            //Asignacion de tamaño de celdas
-            for(int x=0;x<cantidadColumnas;x++){
-                tablaNombre.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
-            }
-            while(rs.next()){
-                //String a=rs.getString("nombre");
-               //correo.setText(a);
-                //System.out.println(a);
-                Object[] filas = new Object[cantidadColumnas];
-                for(int i=0; i<cantidadColumnas; i++){
-                    filas[i]= rs.getObject(i+1); 
+                String  whereLike="WHERE nombre LIKE '%"+correo.getText()+"%'";
+                try{
+                  //busqueda en la base de datos
+                   ps= con.getconexion().prepareStatement("SELECT nit,nombre FROM cliente "+whereLike);
+                   rs=ps.executeQuery();
+                   ResultSetMetaData rsMd =rs.getMetaData();
+                        //Configuracion de  la tabla
+                    int cantidadColumnas= rsMd.getColumnCount();
+                    int [] anchos ={100,100};
+                        //Asignacion de tamaño de celdas
+                    for(int x=0;x<cantidadColumnas;x++){
+                         tablaNombre.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
+                    }
+                    while(rs.next()){
+                            //String a=rs.getString("nombre");
+                           //correo.setText(a);
+                            //System.out.println(a);
+                        Object[] filas = new Object[cantidadColumnas];
+                        for(int i=0; i<cantidadColumnas; i++){
+                            filas[i]= rs.getObject(i+1); 
+                        }
+                        modelo.addRow(filas);
+                        }
+                }catch(Exception e){
+                    System.out.println(e);       
                 }
-                modelo.addRow(filas);
-            }
-          }
-          catch(Exception e){
-              System.out.println(e);       
-          }
-        }else {
-     
-        String  whereLike="WHERE nit LIKE '%"+nit.getText()+"%'";
-        try{
-            //busqueda en la base de datos
-            ps= con.getconexion().prepareStatement("SELECT nit,nombre FROM cliente "+whereLike);
-            rs=ps.executeQuery();
-            ResultSetMetaData rsMd =rs.getMetaData();
-            //Configuracion de  la tabla
-            int cantidadColumnas= rsMd.getColumnCount();
-            int [] anchos ={100,100};
-            //Asignacion de tamaño de celdas
-            for(int x=0;x<cantidadColumnas;x++){
-                tablaNombre.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
-            }
-            while(rs.next()){
-                //String a=rs.getString("nombre");
-               //correo.setText(a);
-                //System.out.println(a);
-                Object[] filas = new Object[cantidadColumnas];
-                for(int i=0; i<cantidadColumnas; i++){
-                    filas[i]= rs.getObject(i+1); 
+            }else{
+                String whereLike="WHERE nit LIKE '%"+nit.getText()+"%'";
+                try{
+                //busqueda en la base de datos
+                ps= con.getconexion().prepareStatement("SELECT nit,nombre FROM cliente "+whereLike);
+                rs=ps.executeQuery();
+                ResultSetMetaData rsMd =rs.getMetaData();
+                //Configuracion de  la tabla
+                int cantidadColumnas= rsMd.getColumnCount();
+                 int [] anchos ={100,100};
+                //Asignacion de tamaño de celdas
+                for(int x=0;x<cantidadColumnas;x++){
+                     tablaNombre.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
                 }
-                modelo.addRow(filas);
-            }
-          }
-          catch(Exception e){
-              System.out.println(e);       
-          }}}
-            
-}
+                while(rs.next()){
+                    Object[] filas = new Object[cantidadColumnas];
+                    for(int i=0; i<cantidadColumnas; i++){
+                        filas[i]= rs.getObject(i+1); 
+                    }
+                    modelo.addRow(filas);
+                }
+                }catch(Exception e){
+                    System.out.println(e);       
+                }}}
+    }   
+    public void RegistrarVenta(){
+        Servicio.setCodigo(codigo.getText());
+        Servicio.setNomServicio(servicio.getText());
+    }
    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -103,7 +149,9 @@ public void search(){
 
         jButton6 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
+        PagPrincipal = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
+        fecha = new javax.swing.JTextField();
         jTextField1 = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -115,7 +163,7 @@ public void search(){
         jSeparator10 = new javax.swing.JSeparator();
         cantidad = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tablaservicio = new javax.swing.JTable();
         servicio = new javax.swing.JTextField();
         jSeparator12 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
@@ -161,8 +209,17 @@ public void search(){
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        PagPrincipal.setText("Pagina Principal");
+        PagPrincipal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PagPrincipalActionPerformed(evt);
+            }
+        });
+        jPanel1.add(PagPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 120, 60));
+
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/logo.png"))); // NOI18N
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, 100, 90));
+        jPanel1.add(fecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 30, 110, 30));
 
         jTextField1.setEditable(false);
         jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 30, 110, 30));
@@ -186,16 +243,17 @@ public void search(){
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel7.setText("Codigo");
         jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 51, -1));
-        jPanel2.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 120, 10));
+        jPanel2.add(jSeparator9, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 60, 120, 10));
 
         codigo.setBorder(null);
-        jPanel2.add(codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 30, 120, 20));
-        jPanel2.add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 50, 70, 30));
+        jPanel2.add(codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 40, 120, 20));
+        jPanel2.add(jSeparator10, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 60, 70, 10));
 
+        cantidad.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         cantidad.setBorder(null);
-        jPanel2.add(cantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 30, 70, 20));
+        jPanel2.add(cantidad, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 40, 70, 20));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tablaservicio.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null}
             },
@@ -203,7 +261,7 @@ public void search(){
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tablaservicio);
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 380, 60));
 
@@ -223,6 +281,11 @@ public void search(){
         jPanel2.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 200, -1, -1));
 
         jButton10.setText("Agregar");
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
         jPanel2.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
 
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, 410, 240));
@@ -308,6 +371,7 @@ public void search(){
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Factura"));
+        jPanel4.setAlignmentX(10.0F);
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel13.setText("Total");
@@ -333,6 +397,9 @@ public void search(){
         jScrollPane4.setViewportView(tabla);
 
         jPanel4.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 580, 180));
+
+        total.setEditable(false);
+        total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         jPanel4.add(total, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 280, 130, 30));
         jPanel4.add(Neto, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, 130, 30));
         jPanel4.add(desc, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 130, 30));
@@ -387,41 +454,7 @@ public void search(){
     }//GEN-LAST:event_correoKeyPressed
 
     private void nitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nitActionPerformed
-               String  whereLike="WHERE nit LIKE '%"+nit.getText()+"%'";
-        try{
-            //busqueda en la base de datos
-            ps= con.getconexion().prepareStatement("SELECT nit,nombre,direccion,telefono, email FROM cliente "+whereLike);
-            rs=ps.executeQuery();
-            ResultSetMetaData rsMd =rs.getMetaData();
-            //Configuracion de  la tabla
-            DefaultTableModel modelo = new DefaultTableModel();
-            tabla.setModel(modelo);
-            int cantidadColumnas= rsMd.getColumnCount();
-            //Asignacion de columnas
-            modelo.addColumn("Nit");
-            modelo.addColumn("Nombre");
-            modelo.addColumn("Direccion");
-            modelo.addColumn("Telefono");
-            modelo.addColumn("Correo");
-            
-            int [] anchos ={100,100,100,100,100};
-            //Asignacion de tamaño de celdas
-            for(int x=0;x<cantidadColumnas;x++){
-                tabla.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
-            }
-            while(rs.next()){
-                // String a=rs.getString("nombre");
-                //System.out.println(a);
-                Object[] filas = new Object[cantidadColumnas];
-                for(int i=0; i<cantidadColumnas; i++){
-                    filas[i]= rs.getObject(i+1); 
-                }
-                modelo.addRow(filas);
-            }
-          }
-          catch(Exception e){
-              System.out.println(e);       
-          }
+              
     }//GEN-LAST:event_nitActionPerformed
 
     private void nitKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyTyped
@@ -439,6 +472,34 @@ public void search(){
     private void correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_correoActionPerformed
+
+    private void PagPrincipalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PagPrincipalActionPerformed
+        principal.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_PagPrincipalActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+      
+        String nombres = codigo.getText();
+        String ape= servicio.getText();
+        String precio= cantidad.getText();
+        
+        String datos[]={nombres,ape,precio};
+         modelo.addRow(datos);
+        
+        
+       
+        
+       
+        
+        
+        int sum=0;
+        
+       for(int i=0; i<tabla.getRowCount();i++){
+            sum= sum+Integer.parseInt(tabla.getValueAt(i, 2).toString());
+            total.setText(Integer.toString(sum));
+        }
+    }//GEN-LAST:event_jButton10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -480,6 +541,7 @@ public void search(){
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField Neto;
+    private javax.swing.JButton PagPrincipal;
     private javax.swing.JButton buscar;
     private javax.swing.JRadioButton busqueda;
     private javax.swing.JTextField cantidad;
@@ -487,6 +549,7 @@ public void search(){
     private javax.swing.JComboBox combo;
     private javax.swing.JTextField correo;
     private javax.swing.JTextField desc;
+    private javax.swing.JTextField fecha;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
@@ -523,12 +586,12 @@ public void search(){
     private javax.swing.JSeparator jSeparator7;
     private javax.swing.JSeparator jSeparator8;
     private javax.swing.JSeparator jSeparator9;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField nit;
     private javax.swing.JTextField servicio;
     private javax.swing.JTable tabla;
     private javax.swing.JTable tablaNombre;
+    private javax.swing.JTable tablaservicio;
     private javax.swing.JTextField total;
     // End of variables declaration//GEN-END:variables
 }
