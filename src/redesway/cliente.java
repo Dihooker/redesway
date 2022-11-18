@@ -20,7 +20,7 @@ public class cliente extends javax.swing.JFrame {
     //Setters de la clase clienteDAO
     public void ClienteDao(){
         client.setNombre(nombre.getText());
-        client.setNit(Integer.valueOf(nit.getText()));
+        client.setNit(nit.getText());
         client.setDireccion(direccion.getText());
         client.setTelefono(telefono.getText());
         client.setCorreo(correo.getText());

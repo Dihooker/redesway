@@ -8,15 +8,19 @@ import java.sql.SQLException;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.sql.ResultSet;
 
 public class servicio extends javax.swing.JFrame {
     
    conexion con = new conexion();
    PreparedStatement ps;
+   ResultSet rs;
    servicioDAO Servicio = new servicioDAO();
    
     public servicio() {
         initComponents();
+        buscar();
+        
     }
     public void borrar(){
         codigo.setText(null);
@@ -35,13 +39,94 @@ public class servicio extends javax.swing.JFrame {
       ps.setInt(3, Servicio.getPrecio());
       ps.executeUpdate();
       borrar();
-      
       JOptionPane.showMessageDialog(null,"Guardado");
       }catch(Exception e){
-          System.out.println(e);
-          
-      }
-  }
+          System.out.println(e); 
+      }}
+     public void buscar(){
+         DefaultTableModel modelo = new DefaultTableModel();
+            tabla.setModel(modelo);
+         try{
+            String Combobox= combo.getSelectedItem().toString();
+            if(Combobox.equals("Codigo")){
+            
+            String whereLike="WHERE codigo LIKE '"+buscar.getText()+"%'";
+            ps= con.getconexion().prepareStatement("SELECT codigo,descripcion, precio FROM  servicio "+whereLike);
+            rs=ps.executeQuery();
+            ResultSetMetaData rsMd =rs.getMetaData();
+            int cantidadColumnas= rsMd.getColumnCount();
+            //Asignacion de columnas
+            modelo.addColumn("Codigo");
+            modelo.addColumn("Servicio");
+            modelo.addColumn("Precio");
+            int [] anchos ={1,100,1};
+            //Asignacion de tamaño de celdas
+            for(int x=0;x<cantidadColumnas;x++){
+                tabla.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
+            }
+            while(rs.next()){
+                Object[] filas = new Object[cantidadColumnas];
+                for(int i=0; i<cantidadColumnas; i++){
+                    filas[i]= rs.getObject(i+1); 
+                }
+                modelo.addRow(filas);
+            }
+         }else if(Combobox.equals("Servicio")){
+                String whereLike="WHERE descripcion LIKE '%"+buscar.getText()+"%'";
+            ps= con.getconexion().prepareStatement("SELECT codigo,descripcion, precio FROM  servicio "+whereLike);
+            rs=ps.executeQuery();
+            ResultSetMetaData rsMd =rs.getMetaData();
+            int cantidadColumnas= rsMd.getColumnCount();
+            //Asignacion de columnas
+            modelo.addColumn("Codigo");
+            modelo.addColumn("Servicio");
+            modelo.addColumn("Precio");
+            int [] anchos ={1,100,1};
+            //Asignacion de tamaño de celdas
+            for(int x=0;x<cantidadColumnas;x++){
+                tabla.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
+            }
+            while(rs.next()){
+                            //String a=rs.getString("nombre");
+                           //correo.setText(a);
+                            //System.out.println(a);
+                Object[] filas = new Object[cantidadColumnas];
+                for(int i=0; i<cantidadColumnas; i++){
+                    filas[i]= rs.getObject(i+1); 
+                }
+                modelo.addRow(filas);
+            }}
+         else if(Combobox.equals("Precio")) {
+             String whereLike="WHERE precio LIKE '%"+buscar.getText()+"%'";
+            ps= con.getconexion().prepareStatement("SELECT codigo,descripcion, precio FROM  servicio "+whereLike);
+            rs=ps.executeQuery();
+            ResultSetMetaData rsMd =rs.getMetaData();
+            int cantidadColumnas= rsMd.getColumnCount();
+            //Asignacion de columnas
+            modelo.addColumn("Codigo");
+            modelo.addColumn("Servicio");
+            modelo.addColumn("Precio");
+            int [] anchos ={1,100,1};
+            //Asignacion de tamaño de celdas
+            for(int x=0;x<cantidadColumnas;x++){
+                tabla.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
+            }
+            while(rs.next()){
+                            //String a=rs.getString("nombre");
+                           //correo.setText(a);
+                            //System.out.println(a);
+                Object[] filas = new Object[cantidadColumnas];
+                for(int i=0; i<cantidadColumnas; i++){
+                    filas[i]= rs.getObject(i+1); 
+                }
+                modelo.addRow(filas);
+         }
+         }}
+         catch(Exception e){
+             System.out.println(e);
+         }
+     }
+  
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -78,7 +163,7 @@ public class servicio extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jSeparator9 = new javax.swing.JSeparator();
-        correo2 = new javax.swing.JTextField();
+        buscar = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         combo = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
@@ -89,8 +174,8 @@ public class servicio extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jButton10.setForeground(new java.awt.Color(255, 255, 255));
-        jButton10.setText("jButton10");
-        getContentPane().add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 330, 150, 40));
+        jButton10.setText("Resumen");
+        getContentPane().add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 150, 50));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -102,24 +187,28 @@ public class servicio extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(0, 0, 102));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon("C:\\Users\\Usuario Principal\\Downloads\\icons8-clear-search-32.png")); // NOI18N
-        jButton1.setText("Buscar");
+        jButton1.setText("Facturacion");
         jButton1.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 jButton1FocusGained(evt);
             }
         });
-        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 150, 40));
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 250, 150, 50));
 
         jButton2.setBackground(new java.awt.Color(0, 0, 102));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
-        jButton2.setText("jButton1");
-        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 150, 40));
+        jButton2.setText("Clientes");
+        getContentPane().add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 150, 50));
 
         jButton3.setBackground(new java.awt.Color(0, 0, 102));
         jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("jButton1");
-        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 150, 40));
+        jButton3.setText("Pagina Principal");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 180, 150, 50));
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/IMAGEN3.jpg"))); // NOI18N
         getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 150, 580));
@@ -136,6 +225,11 @@ public class servicio extends javax.swing.JFrame {
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         codigo.setBorder(null);
+        codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                codigoKeyPressed(evt);
+            }
+        });
         jPanel4.add(codigo, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 110, 20));
         jPanel4.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 110, 10));
 
@@ -198,26 +292,44 @@ public class servicio extends javax.swing.JFrame {
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Codigo", "Servicio"
+                "Codigo", "Servicio", "Precio"
             }
         ));
-        tabla.setGridColor(new java.awt.Color(255, 153, 0));
+        tabla.setGridColor(new java.awt.Color(0, 0, 153));
         tabla.setPreferredSize(new java.awt.Dimension(300, 100));
         tabla.setSelectionForeground(new java.awt.Color(153, 204, 255));
         jScrollPane1.setViewportView(tabla);
 
-        correo2.setBorder(null);
+        buscar.setBorder(null);
+        buscar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                buscarKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                buscarKeyReleased(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                buscarKeyTyped(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel13.setText("Codigo");
 
-        combo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Codigo", "servicio" }));
+        combo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Codigo", "Servicio", "Precio" }));
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -231,9 +343,9 @@ public class servicio extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(correo2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 106, Short.MAX_VALUE)
-                        .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
+                        .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -246,7 +358,7 @@ public class servicio extends javax.swing.JFrame {
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(correo2, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabel13)))
                 .addGap(0, 0, 0)
                 .addComponent(jSeparator9, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -288,14 +400,39 @@ public class servicio extends javax.swing.JFrame {
     }//GEN-LAST:event_servicioActionPerformed
 
     private void crearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearActionPerformed
-      crear();
-      
-       
+        if(precio.getText().isEmpty()||servicio.getText().isEmpty()||precio.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Los campos no pueden estar vacios");
+        }
+        else{
+            crear();
+        }
     }//GEN-LAST:event_crearActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         borrar();
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+       PaginaPrincipal pag = new PaginaPrincipal();
+       pag.setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void buscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscarKeyPressed
+     
+    }//GEN-LAST:event_buscarKeyPressed
+
+    private void codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyPressed
+        buscar();
+    }//GEN-LAST:event_codigoKeyPressed
+
+    private void buscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscarKeyTyped
+       buscar();
+    }//GEN-LAST:event_buscarKeyTyped
+
+    private void buscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscarKeyReleased
+        buscar();
+    }//GEN-LAST:event_buscarKeyReleased
 
     /**
      * @param args the command line arguments
@@ -333,9 +470,9 @@ public class servicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField buscar;
     private javax.swing.JTextField codigo;
     private javax.swing.JComboBox combo;
-    private javax.swing.JTextField correo2;
     private javax.swing.JButton crear;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;

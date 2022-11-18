@@ -14,6 +14,8 @@ public class PaginaPrincipal extends javax.swing.JFrame {
     public PaginaPrincipal() {
         initComponents();
         cambioTitulo();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
         //setIconImage(new ImageIcon(getClass().getResource("../imagenes/Logo2.jpeg")).getImage());
         
     }
@@ -133,7 +135,7 @@ public class PaginaPrincipal extends javax.swing.JFrame {
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/icons8-note-48.png"))); // NOI18N
         jButton3.setText("Cotizacion");
         jPanel2.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 160, 150, 80));
-        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 2, 550, 20));
+        jPanel2.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 0, 550, 30));
 
         jButton4.setBackground(new java.awt.Color(204, 0, 255));
         jButton4.setForeground(new java.awt.Color(255, 255, 255));

@@ -7,6 +7,7 @@ public class servicioDAO {
     private String nomServicio;
     private int cantidad;
     private int precio;
+    private String busqueda;
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;

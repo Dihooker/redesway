@@ -2,18 +2,18 @@
 package redesway;
 
 public class clienteDAO {
-    private int nit;
+    private String nit;
     private String nombre;
     private String direccion;
     private String telefono;
     private String correo;
     private String contacto;
 
-    public int getNit() {
+    public String getNit() {
         return nit;
     }
 
-    public void setNit(int nit) {
+    public void setNit(String nit) {
         this.nit = nit;
     }
 
