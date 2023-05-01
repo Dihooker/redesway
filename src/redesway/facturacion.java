@@ -25,10 +25,12 @@ public class facturacion extends javax.swing.JFrame {
     
     public facturacion() {
         initComponents();
+       
+       
         desc.setText("0");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        fecha.setVisible(false);
+        fecha.setVisible(true);
         int a=20;
         String c="Helvetica";
         //servicio.setFont(new Font(c, Font.BOLD, a));
@@ -93,6 +95,8 @@ public class facturacion extends javax.swing.JFrame {
         modelo.addColumn("Nombre");
            
         if(busqueda.isSelected()){
+            
+            jPanel3.setVisible(true);
             String combobox= combo.getSelectedItem().toString();
             if(combobox.equals("Nombre")){
                 String  whereLike="WHERE nombre LIKE '%"+correo.getText()+"%'";
@@ -457,7 +461,7 @@ public class facturacion extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(tablaNombre);
 
-        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 410, 60));
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 410, 50));
 
         jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 450, 240));
 
