@@ -30,7 +30,7 @@ public class facturacion extends javax.swing.JFrame {
         desc.setText("0");
         this.setResizable(false);
         this.setLocationRelativeTo(null);
-        fecha.setVisible(true);
+        fecha.setVisible(false);
         int a=20;
         String c="Helvetica";
         //servicio.setFont(new Font(c, Font.BOLD, a));
@@ -46,11 +46,9 @@ public class facturacion extends javax.swing.JFrame {
         JTableHeader headerPrincipal = tabla.getTableHeader();
         ((DefaultTableCellRenderer)headerPrincipal.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
         //Configuracion  header por defecto tabla servicio
-        JTableHeader headerServicio = tablaservicio.getTableHeader();
-        ((DefaultTableCellRenderer)headerServicio.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+      
         //configuracion header por defecto tabla nombre
-        JTableHeader headerNombre = tablaNombre.getTableHeader();
-        ((DefaultTableCellRenderer)headerNombre.getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);
+        
         //Configuracion tabla principal
         DefaultTableModel modeloPrincipal = new DefaultTableModel();
         modeloPrincipal.addColumn("Codigo");
@@ -66,7 +64,7 @@ public class facturacion extends javax.swing.JFrame {
         DefaultTableCellRenderer render = new  DefaultTableCellRenderer();
         DefaultTableCellRenderer renderRight = new  DefaultTableCellRenderer();
        
-        tablaservicio.setModel(modeloServicio);
+       
         tabla.setModel(modelo);
         modelo.addColumn("Codigo");
         modelo.addColumn("Servicio");
@@ -87,68 +85,10 @@ public class facturacion extends javax.swing.JFrame {
        
         
     }
-    public void search(){
+    
          //Parametros de la tabla
-        DefaultTableModel modelo = new DefaultTableModel();
-        tablaNombre.setModel(modelo);
-        modelo.addColumn("Nit");
-        modelo.addColumn("Nombre");
-           
-        if(busqueda.isSelected()){
-            
-            jPanel3.setVisible(true);
-            String combobox= combo.getSelectedItem().toString();
-            if(combobox.equals("Nombre")){
-                String  whereLike="WHERE nombre LIKE '%"+correo.getText()+"%'";
-                try{
-                  //busqueda en la base de datos
-                   ps= con.getconexion().prepareStatement("SELECT nit,nombre FROM cliente "+whereLike);
-                   rs=ps.executeQuery();
-                   ResultSetMetaData rsMd =rs.getMetaData();
-                        //Configuracion de  la tabla
-                    int cantidadColumnas= rsMd.getColumnCount();
-                    int [] anchos ={100,100};
-                        //Asignacion de tamaño de celdas
-                    for(int x=0;x<cantidadColumnas;x++){
-                         tablaNombre.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
-                    }
-                    while(rs.next()){
-                            //String a=rs.getString("nombre");
-                           //correo.setText(a);
-                            //System.out.println(a);
-                        Object[] filas = new Object[cantidadColumnas];
-                        for(int i=0; i<cantidadColumnas; i++){
-                            filas[i]= rs.getObject(i+1); 
-                        }
-                        modelo.addRow(filas);
-                        }
-                }catch(Exception e){
-                    System.out.println(e);       
-                }
-            }else{
-                String whereLike="WHERE nit LIKE '%"+nit.getText()+"%'";
-                try{
-                //busqueda en la base de datos
-                ps= con.getconexion().prepareStatement("SELECT nit,nombre FROM cliente "+whereLike);
-                rs=ps.executeQuery();
-                ResultSetMetaData rsMd =rs.getMetaData();
-                //Configuracion de  la tabla
-                int cantidadColumnas= rsMd.getColumnCount();
-                 int [] anchos ={100,100};
-                //Asignacion de tamaño de celdas
-                for(int x=0;x<cantidadColumnas;x++){
-                     tablaNombre.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
-                }
-                while(rs.next()){
-                    Object[] filas = new Object[cantidadColumnas];
-                    for(int i=0; i<cantidadColumnas; i++){
-                        filas[i]= rs.getObject(i+1); 
-                    }
-                    modelo.addRow(filas);
-                }
-                }catch(Exception e){
-                    System.out.println(e);       
-                }}}}
+        
+      
     public void agregar(){
         try{
             String code = codigo.getText();
@@ -169,37 +109,7 @@ public class facturacion extends javax.swing.JFrame {
           System.out.println(e);
       }
 }
-    public void RegistrarVenta(){
-        
-        Servicio.setCodigo(codigo.getText());
-        String whereLike="WHERE codigo LIKE '"+Servicio.getCodigo()+"%'";
-                try{
-                //busqueda en la base de datos
-                ps= con.getconexion().prepareStatement("SELECT codigo,descripcion,precio FROM servicio "+whereLike);
-                rs=ps.executeQuery();
-                ResultSetMetaData rsMd =rs.getMetaData();
-                //Configuracion de  la tabla
-                int cantidadColumnas= rsMd.getColumnCount();
-                 int [] anchos ={1,100,1};
-                //Asignacion de tamaño de celdas
-                for(int x=0;x<cantidadColumnas;x++){
-                     tablaservicio.getColumnModel().getColumn(x).setPreferredWidth(anchos[x]);
-                }
-                while(rs.next()){
-                    Object[] filas = new Object[cantidadColumnas];
-                    for(int i=0; i<cantidadColumnas; i++){
-                        filas[i]= rs.getObject(i+1); 
-                    }
-                    DefaultTableModel modelo2= new DefaultTableModel();
-                    modelo2.addColumn("Codigo");
-                    modelo2.addColumn("Servicio");
-                    modelo2.addColumn("Precio");
-                    tablaservicio.setModel(modelo2);
-                    modelo2.addRow(filas);
-                }
-                }catch(Exception e){
-                    System.out.println(e);       
-                }}
+   
     
    
     @SuppressWarnings("unchecked")
@@ -224,14 +134,10 @@ public class facturacion extends javax.swing.JFrame {
         codigo = new javax.swing.JTextField();
         jSeparator10 = new javax.swing.JSeparator();
         precios = new javax.swing.JTextField();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tablaservicio = new javax.swing.JTable();
         servicio = new javax.swing.JTextField();
         jSeparator12 = new javax.swing.JSeparator();
         jLabel10 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jButton7 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jSeparator8 = new javax.swing.JSeparator();
         correo = new javax.swing.JTextField();
@@ -239,15 +145,7 @@ public class facturacion extends javax.swing.JFrame {
         jSeparator7 = new javax.swing.JSeparator();
         nit = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jButton11 = new javax.swing.JButton();
-        combo = new javax.swing.JComboBox();
-        busqueda = new javax.swing.JRadioButton();
-        jSeparator1 = new javax.swing.JSeparator();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tablaNombre = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
-        jLabel13 = new javax.swing.JLabel();
         total = new javax.swing.JTextField();
         Neto = new javax.swing.JTextField();
         desc = new javax.swing.JTextField();
@@ -320,7 +218,7 @@ public class facturacion extends javax.swing.JFrame {
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/1156778(1)_2.jpg"))); // NOI18N
         jLabel3.setText("jLabel3");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 120, 680));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 120, 710));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("servicio"));
@@ -344,18 +242,6 @@ public class facturacion extends javax.swing.JFrame {
         precios.setBorder(null);
         jPanel2.add(precios, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 40, 70, 20));
 
-        tablaservicio.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(tablaservicio);
-
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 380, 60));
-
         servicio.setBorder(null);
         jPanel2.add(servicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 80, 300, 20));
         jPanel2.add(jSeparator12, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 100, 300, 10));
@@ -368,28 +254,12 @@ public class facturacion extends javax.swing.JFrame {
         jLabel14.setText("Servicio");
         jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 60, 20));
 
-        jButton7.setText("Buscar");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 200, -1, -1));
-
-        jButton10.setText("Agregar");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
-
-        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, 400, 240));
+        jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 110, 400, 120));
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Cliente"));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        jPanel3.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 110, 150, 10));
+        jPanel3.add(jSeparator8, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 40, 150, 10));
 
         correo.setBorder(null);
         correo.addActionListener(new java.awt.event.ActionListener() {
@@ -405,12 +275,12 @@ public class facturacion extends javax.swing.JFrame {
                 correoKeyTyped(evt);
             }
         });
-        jPanel3.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 150, 20));
+        jPanel3.add(correo, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 20, 150, 20));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setText("Nombre");
-        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 100, 60, -1));
-        jPanel3.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, 120, 10));
+        jPanel3.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, 60, -1));
+        jPanel3.add(jSeparator7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 40, 120, 10));
 
         nit.setBorder(null);
         nit.addActionListener(new java.awt.event.ActionListener() {
@@ -426,59 +296,25 @@ public class facturacion extends javax.swing.JFrame {
                 nitKeyTyped(evt);
             }
         });
-        jPanel3.add(nit, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 90, 120, 20));
+        jPanel3.add(nit, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 120, 20));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setText("Nit");
-        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, 51, -1));
+        jPanel3.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 51, -1));
 
-        jButton1.setText("Borrar");
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 200, -1, -1));
-
-        jButton11.setText("Agregar");
-        jPanel3.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, -1, -1));
-
-        combo.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Nit", "Nombre" }));
-        jPanel3.add(combo, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, -1, 30));
-
-        busqueda.setText("Buscar Cliente");
-        jPanel3.add(busqueda, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 30, -1, 30));
-        jPanel3.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 410, -1));
-
-        tablaNombre.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        tablaNombre.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null}
-            },
-            new String [] {
-                "Nit", "Nombre"
-            }
-        ));
-        tablaNombre.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablaNombreMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tablaNombre);
-
-        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 130, 410, 50));
-
-        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 450, 240));
+        jPanel1.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 110, 450, 80));
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Factura"));
         jPanel4.setAlignmentX(10.0F);
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel13.setText("Total");
-        jPanel4.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 350, 30, -1));
-
         total.setEditable(false);
         total.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jPanel4.add(total, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 280, 130, 30));
+        jPanel4.add(total, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 330, 130, 30));
 
         Neto.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        jPanel4.add(Neto, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 220, 130, 30));
+        jPanel4.add(Neto, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 270, 130, 30));
 
         desc.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         desc.addActionListener(new java.awt.event.ActionListener() {
@@ -494,40 +330,45 @@ public class facturacion extends javax.swing.JFrame {
                 descKeyReleased(evt);
             }
         });
-        jPanel4.add(desc, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 250, 130, 30));
+        jPanel4.add(desc, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 300, 130, 30));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel8.setText("Valor Total");
-        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 280, -1, 20));
+        jPanel4.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 330, -1, 20));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setText("Valor Neto");
-        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 220, -1, 20));
+        jPanel4.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 270, -1, 20));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel11.setText("Descuento");
-        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 250, -1, 20));
+        jPanel4.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 300, -1, 20));
 
         jPanel5.setBackground(new java.awt.Color(255, 255, 255));
         jPanel5.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         buscar.setText("Guardar");
-        jPanel5.add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 90, 50));
+        jPanel5.add(buscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 90, 50));
 
         jButton8.setText("PDF");
-        jPanel5.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 30, 90, 50));
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, 90, 50));
 
         jButton5.setText("Borrar");
-        jPanel5.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 90, 50));
+        jPanel5.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 110, 90, 50));
 
         jButton9.setText("Buscar");
-        jPanel5.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 90, 50));
+        jPanel5.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 110, 90, 50));
 
-        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 50, 230, 210));
+        jPanel4.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 220, 350, 180));
 
         jRadioButton1.setText("Ret.Fuente");
-        jPanel4.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 220, -1, -1));
+        jPanel4.add(jRadioButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, -1, -1));
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -548,21 +389,21 @@ public class facturacion extends javax.swing.JFrame {
         ));
         jScrollPane4.setViewportView(tabla);
 
-        jPanel4.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 580, 180));
+        jPanel4.add(jScrollPane4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 30, 810, 180));
 
-        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 350, 850, 320));
+        jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 260, 850, 440));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 680));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1000, 710));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void nitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nitKeyPressed
-         search();
+         
     }//GEN-LAST:event_nitKeyPressed
 
     private void correoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_correoKeyPressed
-          search();
+          
     }//GEN-LAST:event_correoKeyPressed
 
     private void nitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nitActionPerformed
@@ -574,12 +415,8 @@ public class facturacion extends javax.swing.JFrame {
     }//GEN-LAST:event_nitKeyTyped
 
     private void correoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_correoKeyTyped
-       search();
+       
     }//GEN-LAST:event_correoKeyTyped
-
-    private void tablaNombreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaNombreMouseClicked
-        
-    }//GEN-LAST:event_tablaNombreMouseClicked
 
     private void correoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correoActionPerformed
         // TODO add your handling code here:
@@ -589,10 +426,6 @@ public class facturacion extends javax.swing.JFrame {
         principal.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_PagPrincipalActionPerformed
-
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        agregar();
-    }//GEN-LAST:event_jButton10ActionPerformed
 
     private void descKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_descKeyPressed
         
@@ -618,10 +451,6 @@ public class facturacion extends javax.swing.JFrame {
         this.setVisible(false);
     }//GEN-LAST:event_PagPrincipal3ActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        RegistrarVenta();
-    }//GEN-LAST:event_jButton7ActionPerformed
-
     private void codigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_codigoKeyPressed
        
     }//GEN-LAST:event_codigoKeyPressed
@@ -639,6 +468,10 @@ public class facturacion extends javax.swing.JFrame {
                System.out.println(e);
            }
     }//GEN-LAST:event_descKeyReleased
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -685,24 +518,17 @@ public class facturacion extends javax.swing.JFrame {
     private javax.swing.JButton PagPrincipal2;
     private javax.swing.JButton PagPrincipal3;
     private javax.swing.JButton buscar;
-    private javax.swing.JRadioButton busqueda;
     private javax.swing.JTextField codigo;
-    private javax.swing.JComboBox combo;
     private javax.swing.JTextField correo;
     private javax.swing.JTextField desc;
     private javax.swing.JTextField fecha;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -718,10 +544,7 @@ public class facturacion extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JSeparator jSeparator7;
@@ -732,8 +555,6 @@ public class facturacion extends javax.swing.JFrame {
     private javax.swing.JTextField precios;
     private javax.swing.JTextField servicio;
     private javax.swing.JTable tabla;
-    private javax.swing.JTable tablaNombre;
-    private javax.swing.JTable tablaservicio;
     private javax.swing.JTextField total;
     // End of variables declaration//GEN-END:variables
 }
